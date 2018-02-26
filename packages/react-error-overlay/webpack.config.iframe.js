@@ -10,11 +10,16 @@ const path = require('path');
 const webpack = require('webpack');
 
 module.exports = {
+  mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
   entry: './src/iframeScript.js',
   output: {
     path: path.join(__dirname, './lib'),
     filename: 'iframe-bundle.js',
   },
+  optimization: {
+    minimize: true,
+  },
+  performance: { hints: false },
   module: {
     rules: [
       {
@@ -34,15 +39,15 @@ module.exports = {
     }),
     // This code is embedded as a string, so it would never be optimized
     // elsewhere.
-    new webpack.optimize.UglifyJsPlugin({
-      compress: {
-        warnings: false,
-        comparisons: false,
-      },
-      output: {
-        comments: false,
-        ascii_only: false,
-      },
-    }),
+    // new UglifyJsPlugin({
+    //   compress: {
+    //     warnings: false,
+    //     comparisons: false
+    //   },
+    //   output: {
+    //     comments: false,
+    //     ascii_only: false
+    //   }
+    // })
   ],
 };
